@@ -24,4 +24,17 @@ export class User extends BaseEntity {
   @ManyToMany(() => Role, { cascade: true, eager: true })
   @JoinTable()
   roles: Role[];
+
+  async assignRole(role: Role) {
+    this.roles = [...this.roles, role];
+    await this.save();
+  }
+
+  static async findByIdWithRolesAndPermissions(userId: string): Promise<User | null> {
+    return this.createQueryBuilder('user')
+      .leftJoinAndSelect('user.roles', 'roles')
+      .leftJoinAndSelect('roles.permissions', 'permissions')
+      .where('user.id = :userId', { userId })
+      .getOne();
+  }
 }

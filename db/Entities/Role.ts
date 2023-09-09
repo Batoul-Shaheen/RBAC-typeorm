@@ -22,4 +22,11 @@ export class Role extends BaseEntity {
 
   @ManyToMany(() => User, user => user.roles)
   users: User[];
+
+  async addPermissions(permissions: Permission[]) {
+    this.permissions = [...this.permissions, ...permissions];
+    await this.save();
+  }
+
+  
 }
