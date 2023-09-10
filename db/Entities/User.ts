@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToMany, BaseEntity, JoinColumn, JoinTable } from "typeorm";
+import { Entity, PrimaryGeneratedColumn,CreateDateColumn, Column, OneToOne, ManyToMany, BaseEntity, JoinColumn, JoinTable } from "typeorm";
 import { Profile } from './Profile.js';
 import { Role } from './Role.js';
 
@@ -24,6 +24,12 @@ export class User extends BaseEntity {
   @ManyToMany(() => Role, { cascade: true, eager: true })
   @JoinTable()
   roles: Role[];
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => "CURRENT_TIMESTAMP(0)"
+  })
+  createdAt: Date;
 
   async assignRole(role: Role) {
     this.roles = [...this.roles, role];

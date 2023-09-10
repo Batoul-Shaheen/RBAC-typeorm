@@ -12,7 +12,7 @@ const dataSource = new DataSource({
   password: '',
   database: 'rbac',
   entities: [ Permission, Profile,Role,User],
-  // migrations: ['./**/migration/*.ts'],
+   migrations: ['./**/migration/*.ts'],
   synchronize: true,
   logging: false,
 });

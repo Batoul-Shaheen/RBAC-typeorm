@@ -1,6 +1,7 @@
 import express from 'express';
 import { User } from '../db/Entities/User.js';
 import { Role } from '../db/Entities/Role.js';
+import { NSUser } from '../@types/user.js'; 
 
 var router = express.Router();
 
