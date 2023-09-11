@@ -1,4 +1,4 @@
-
+import { Role } from "../db/Entities/Role.js";
 
 export namespace NSUser {
     export enum Type {

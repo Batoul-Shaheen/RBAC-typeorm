@@ -1,43 +1,56 @@
 import express from 'express';
 import { User } from '../db/Entities/User.js';
-import { Role } from '../db/Entities/Role.js';
 import { NSUser } from '../@types/user.js'; 
+import dataSource from '../db/dataSource.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
-var router = express.Router();
 
-router.post('/', async (req: express.Request, res:express.Response) => {
-    try {
-      const newUser =  await User.create(req.body);
-      await newUser.save();
-      res.status(201).send( newUser );
-    } catch (error) {
-      res.status(500).send( 'An error occurred when created users ' );
-    }
+const insertUser = (payload: NSUser.Item) => {
+  return dataSource.manager.transaction(async transaction => {
+    const newUser = User.create({
+      ...payload,
+    });
+    await transaction.save(newUser);
   });
+}
 
-  router.post('/:userId/:roleId', async (req, res) => {
-    try {
-      const user = await User.findOne({where: {id: parseInt(req.params.userId)}});
-      const role = await Role.findOne({where: {id: parseInt(req.params.roleId)}});
-  
-      if (!user || !role) {
-        return res.status(404).send( 'User or role not found' );
-      }
-        await user.assignRole(role);
-        res.status(200).send(user);
-    } catch (error) {
-      res.status(500).send('An error occurred when Assign Role to User' );
-    }
-  });
+const login = async (email: string, password: string) => {
+  try {
+    const user = await User.findOneBy({
+      email
+    });
 
-  router.get('/:userId', async (req, res) => {
-    try {
-      const userId = req.params.userId;
-        const user = await User.findByIdWithRolesAndPermissions(userId);
-        res.status(200).send(user);
-    } catch (error) {
-      res.status(500).send( 'An error occurred when Get User' );
+    const passwordMatching = await bcrypt.compare(password, user?.password || '');
+
+    if (user && passwordMatching) {
+      const token = jwt.sign(
+        {
+          email: user.email,
+          fullName: user.username
+        },
+        process.env.SECRET_KEY || '',
+        {
+          expiresIn: "30m"
+        }
+      );
+
+      return token;
+    } else {
+      throw ("Invalid Username or password!");
     }
-  });
-  
-  export default router;
+  } catch (error) {
+    throw ("Invalid Username or password!");
+  }
+}
+
+
+const getUsers = () => {
+  return User.find();
+}
+
+export {
+  insertUser,
+  login,
+  getUsers
+}

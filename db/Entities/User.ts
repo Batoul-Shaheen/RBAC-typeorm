@@ -30,17 +30,4 @@ export class User extends BaseEntity {
     default: () => "CURRENT_TIMESTAMP(0)"
   })
   createdAt: Date;
-
-  async assignRole(role: Role) {
-    this.roles = [...this.roles, role];
-    await this.save();
-  }
-
-  static async findByIdWithRolesAndPermissions(userId: string): Promise<User | null> {
-    return this.createQueryBuilder('user')
-      .leftJoinAndSelect('user.roles', 'roles')
-      .leftJoinAndSelect('roles.permissions', 'permissions')
-      .where('user.id = :userId', { userId })
-      .getOne();
-  }
 }

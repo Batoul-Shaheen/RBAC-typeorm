@@ -7,7 +7,8 @@ export class Role extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({
+   @Column
+  ({
     nullable: false,
     type: 'enum',
     enum: ['Admin', 'User', 'Editor'],
@@ -22,11 +23,6 @@ export class Role extends BaseEntity {
 
   @ManyToMany(() => User, user => user.roles)
   users: User[];
-
-  async addPermissions(permissions: Permission[]) {
-    this.permissions = [...this.permissions, ...permissions];
-    await this.save();
-  }
 
   
 }
