@@ -1,5 +1,4 @@
 import express from "express";
-import db from "./db/dataSource.js";
 import usersrouter from './router/usersrouter.js'; 
 
 const app = express();
@@ -21,7 +20,6 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`App is listening on port ${PORT}`);
-  db.initialize();
 });
 
 export default app;

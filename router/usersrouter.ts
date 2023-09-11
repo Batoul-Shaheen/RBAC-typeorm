@@ -4,17 +4,14 @@ import { authorize } from '../middlewares/auth/authorize.js';
 import insertPermission  from '../controllers/PermissionController.js'
 import {insertUser,getUsers,login} from '../controllers/UserController.js'
 import {insertRole,insertRolewithUser} from '../controllers/RoleController.js'
-import authenticate from '../middlewares/auth/authenticate.js'
+import { authenticate } from '../middlewares/auth/authenticate.js';
 
 const router = express.Router();
 
 router.post('/', authorize('POST_users'), validateUser, (req, res, next) => {
     insertUser(req.body).then(() => {
       res.status(201).send()
-    }).catch(err => {
-      console.error(err);
-      res.status(500).send(err);
-    });
+    })
   });
 
   router.post('/role', authorize('POST_users/role'), authenticate, (req, res, next) => {

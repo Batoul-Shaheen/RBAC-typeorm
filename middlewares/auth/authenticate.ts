@@ -23,6 +23,4 @@ const authenticate = async (
   }
 }
 
-export  default {
-  authenticate
-}
+export {authenticate} ;
