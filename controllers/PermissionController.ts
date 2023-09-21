@@ -1,4 +1,3 @@
-import express from 'express';
 import { Permission } from '../db/Entities/Permission.js';
 import { NSUser } from '../@types/user.js';
 

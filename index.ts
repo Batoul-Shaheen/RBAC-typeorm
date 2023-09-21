@@ -1,11 +1,13 @@
 import express from "express";
-import usersrouter from './router/usersrouter.js'; 
+import usersrouter from './router/usersrouter.js';
+import { authenticate } from './middlewares/auth/authenticate.js';
+
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-app.use('/users' , usersrouter );
+app.use('/users' , authenticate, usersrouter );
 
 app.use((err: any, req: any, res: any, next: any) => {
   res.locals.message = err.message;

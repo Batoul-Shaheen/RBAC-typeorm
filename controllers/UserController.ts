@@ -1,4 +1,3 @@
-import express from 'express';
 import { User } from '../db/Entities/User.js';
 import { NSUser } from '../@types/user.js'; 
 import dataSource from '../db/dataSource.js';
@@ -7,13 +6,12 @@ import jwt from 'jsonwebtoken';
 
 
 const insertUser = (payload: NSUser.Item) => {
-  return dataSource.manager.transaction(async transaction => {
-    const newUser = User.create({
-      ...payload,
-    });
-    await transaction.save(newUser);
-  });
+ return dataSource.manager.transaction(async transaction => {
+  const newUser = User.create({username: payload.type});
+  await transaction.save(newUser);
+ })
 }
+
 
 const login = async (email: string, password: string) => {
   try {
@@ -31,7 +29,7 @@ const login = async (email: string, password: string) => {
         },
         process.env.SECRET_KEY || '',
         {
-          expiresIn: "30m"
+          expiresIn: "2w"
         }
       );
 
@@ -51,6 +49,6 @@ const getUsers = () => {
 
 export {
   insertUser,
-  login,
-  getUsers
+  getUsers,
+  login
 }

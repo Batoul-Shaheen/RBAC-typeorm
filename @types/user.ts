@@ -1,4 +1,3 @@
-import { Role } from "../db/Entities/Role.js";
 
 export namespace NSUser {
     export enum Type {
@@ -18,12 +17,18 @@ export namespace NSUser {
   
     export interface Role {
       id: number;
-      name: string;
+      name: "Admin" | "User" | "Editor";
       permissions: number[];
+      type: 'enum'; 
+      enum: ['Admin', 'User', 'Editor'];
+      default: 'User';
     }
     
     export interface Permission {
       id: number;
-      name: string;
+      name: 'create_post' |'edit_user' | 'delete_comment' | 'view_post';
+      type: 'enum', 
+      enum: ['create_post', 'edit_user', 'delete_comment', 'view_post'];
+  
     }
 }
