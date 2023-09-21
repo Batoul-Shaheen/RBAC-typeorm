@@ -1,7 +1,8 @@
 import express from "express";
 import usersrouter from './router/usersrouter.js';
 import { authenticate } from './middlewares/auth/authenticate.js';
-
+import dataSource,  { initDB } from "./db/dataSource.js";
+import logger from 'morgan';
 
 const app = express();
 const PORT = 3000;
@@ -21,7 +22,9 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
+  logger(`App is listening on port ${PORT}`);
   console.log(`App is listening on port ${PORT}`);
+  initDB();
 });
 
 export default app;
