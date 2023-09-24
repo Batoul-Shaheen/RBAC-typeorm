@@ -8,10 +8,13 @@ import { authenticate } from '../middlewares/auth/authenticate.js';
 const router = express.Router();
 
 router.post('/', validateUser, (req, res, next) => {
-    insertUser(req.body).then(() => {
-      res.status(201).send()
-    })
-  });
+    insertUser(req.body).then((data) => {
+      res.status(201).send(`Successfully Added the user`)
+    }).catch(err=> {
+      console.error(`db err. ${err}`)
+      res.status(500).send(`db err. ${err}`);
+  })
+});
 
   // router.post('/role', authenticate, (req, res, next) => {
   //   insertRole(req.body).then((data) => {
