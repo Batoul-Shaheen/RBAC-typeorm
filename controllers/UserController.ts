@@ -44,8 +44,13 @@ const login = async (email: string, password: string) => {
 
 
 const getUsers = () => {
-  return User.find();
-}
+  try {
+    return User.find();
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error; 
+  }
+};
 
 export {
   insertUser,

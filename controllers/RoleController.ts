@@ -6,15 +6,28 @@ import { User } from '../db/Entities/User.js';
 import { In } from 'typeorm';
 
 
-const insertRolewithUser = (payload : NSUser.Item) => {
-  return dataSource.manager.transaction(async transaction => {
+const insertRolewithUser = async (payload: NSUser.Item) => {
+  try {
     const role = await Role.findOneBy({ name: payload.type });
+    if (!role) {
+      throw new Error(`Role with name ${payload.type} not found`);
+    }
+
     const newUser = User.create({
       ...payload,
     });
-    await transaction.save(newUser);
-  });
-}
+
+    await dataSource.manager.transaction(async (transaction) => {
+      await transaction.save(newUser);
+    });
+
+    return newUser;
+  } catch (error) {
+    console.error('Error inserting user with role:', error);
+    throw error; 
+  }
+};
+
 const insertRole = async (payload: NSUser.Role) => {
   try {
     const role = new Role();
