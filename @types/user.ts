@@ -17,7 +17,7 @@ export namespace NSUser {
   
     export interface Role {
       id: number;
-      name: "Admin" | "User" | "Editor";
+      name: string;
       permissions: number[];
       type: 'enum'; 
       enum: ['Admin', 'User', 'Editor'];
@@ -26,9 +26,9 @@ export namespace NSUser {
     
     export interface Permission {
       id: number;
-      name: 'create_post' |'edit_user' | 'delete_comment' | 'view_post';
+      name: "'create_user', 'edit_user', 'delete_comment', 'view_post'";
       type: 'enum', 
-      enum: ['create_post', 'edit_user', 'delete_comment', 'view_post'];
+      enum: ['create_user', 'edit_user', 'delete_comment', 'view_post'];
   
     }
 }

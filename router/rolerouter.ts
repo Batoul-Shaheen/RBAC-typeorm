@@ -4,7 +4,7 @@ import { authenticate } from '../middlewares/auth/authenticate.js';
 
 const router = express.Router();
 
-router.post('/role', authenticate, (req, res, next) => {
+router.post('/role', (req, res, next) => {
     insertRole(req.body).then((data) => {
       res.status(201).send(data)
     }).catch(err => {
@@ -13,7 +13,7 @@ router.post('/role', authenticate, (req, res, next) => {
     });
   });
   
-  router.post('/roleUser', authenticate, (req, res, next) => {
+  router.post('/roleUser', (req, res, next) => {
     insertRolewithUser(req.body).then((data) =>{
     res.status(201).send(data)
   }).catch(err => {

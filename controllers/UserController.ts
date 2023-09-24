@@ -12,11 +12,10 @@ const insertUser = (payload: NSUser.Item) => {
  })
 }
 
-
-const login = async (email: string, password: string) => {
+const login = async (username: string, password: string) => {
   try {
-    const user = await User.findOneBy({
-      email
+    const user = await User.findOne({
+      where: {email: username}
     });
 
     const passwordMatching = await bcrypt.compare(password, user?.password || '');
@@ -33,12 +32,12 @@ const login = async (email: string, password: string) => {
         }
       );
 
-      return token;
+      return {username,token};
     } else {
-      throw ("Invalid Username or password!");
+      throw ("Invalid Username || password!");
     }
   } catch (error) {
-    throw ("Invalid Username or password!");
+    throw ("Invalid Username or password*!");
   }
 }
 

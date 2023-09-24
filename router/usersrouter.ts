@@ -1,7 +1,6 @@
 import express from 'express';
 import { validateUser } from '../middlewares/validation/user.js';
 // import { authorize } from '../middlewares/auth/authorize.js';
-import insertPermission  from '../controllers/PermissionController.js'
 import {insertUser,getUsers,login} from '../controllers/UserController.js'
 import { authenticate } from '../middlewares/auth/authenticate.js';
 
@@ -44,7 +43,7 @@ router.post('/', validateUser, (req, res, next) => {
   // });
 
 
-router.post('/login', (req, res) => {
+router.post('/login', authenticate,(req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     if(email && password) {
@@ -59,7 +58,7 @@ router.post('/login', (req, res) => {
       }
 });
 
-router.get('/user', authenticate, async (req, res, next) => {
+router.get('/user', async (req, res, next) => {
     try {
       const users = await getUsers();
       res.send(users);

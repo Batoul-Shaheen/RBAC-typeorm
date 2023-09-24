@@ -20,7 +20,6 @@ const insertRolewithUser = async (payload: NSUser.Item) => {
     await dataSource.manager.transaction(async (transaction) => {
       await transaction.save(newUser);
     });
-
     return newUser;
   } catch (error) {
     console.error('Error inserting user with role:', error);
@@ -31,7 +30,7 @@ const insertRolewithUser = async (payload: NSUser.Item) => {
 const insertRole = async (payload: NSUser.Role) => {
   try {
     const role = new Role();
-    role.name= payload.name
+    role.name= 'Admin'
     role.permissions = await Permission.findBy({
       id: In(payload.permissions)
     });

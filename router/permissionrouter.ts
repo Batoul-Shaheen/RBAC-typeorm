@@ -1,11 +1,11 @@
 import express from 'express';
 import insertPermission  from '../controllers/PermissionController.js'
-import { authenticate } from '../middlewares/auth/authenticate.js';
+// import { authenticate } from '../middlewares/auth/authenticate.js';
 
 const router = express.Router();
 
 
-router.post('/permission', authenticate, (req, res, next) => {
+router.post('/permission', (req, res, next) => {
     insertPermission(req.body).then((data) => {
       res.status(201).send(data)
     }).catch(err => {
