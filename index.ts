@@ -2,7 +2,9 @@ import './config.js';
 import express from "express";
 import cors from 'cors';
 import usersrouter from './router/usersrouter.js';
+import permissionrouter from './router/permissionrouter.js';
 import { authenticate } from './middlewares/auth/authenticate.js';
+import rolerouter from './router/rolerouter.js';
 import dataSource,  { initDB } from "./db/dataSource.js";
 
 
@@ -15,6 +17,9 @@ app.use(cors({
 
 app.use(express.json());
 app.use('/users' , authenticate, usersrouter );
+app.use('/roles' ,authenticate, rolerouter );
+app.use('/permissions' , authenticate, permissionrouter );
+
 
 app.use((err: any, req: any, res: any, next: any) => {
   res.locals.message = err.message;
